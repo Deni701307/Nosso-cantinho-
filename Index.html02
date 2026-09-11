@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nosso Cantinho ❤️</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #301934, #7b2d5f);
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 35px 20px 20px;
+    }
+
+    header h1 {
+      margin-bottom: 8px;
+      font-size: 32px;
+    }
+
+    header p {
+      opacity: 0.85;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    input,
+    textarea,
+    button,
+    select {
+      width: 100%;
+      padding: 13px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      background: #ff5f91;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .item {
+      background: rgba(0,0,0,0.20);
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+
+    .photo {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-top: 12px;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>❤️ Nosso Cantinho ❤️</h1>
+  <p>Um lugar especial só para nós.</p>
+</header>
+
+<div class="container">
+
+  <!-- AGENDA -->
+  <div class="card">
+    <h2>📅 Nossa Agenda</h2>
+
+    <input
+      id="titulo"
+      type="text"
+      placeholder="Ex.: Tomar remédio"
+    >
+
+    <input
+      id="dataHora"
+      type="datetime-local"
+    >
+
+    <button onclick="adicionarLembrete()">
+      🔔 Criar lembrete
+    </button>
+
+    <div id="listaLembretes"></div>
+  </div>
+
+
+  <!-- BLOCO DE NOTAS -->
+  <div class="card">
+    <h2>📝 Bloco de Notas</h2>
+
+    <textarea
+      id="notas"
+      placeholder="Escreva aqui nossos recados, planos, sonhos..."
+    ></textarea>
+
+    <button onclick="salvarNotas()">
+      💾 Salvar anotação
+    </button>
+
+    <p id="statusNota"></p>
+  </div>
+
+
+  <!-- FOTOS -->
+  <div class="card">
+    <h2>📸 Nossas Fotos</h2>
+
+    <p>Escolha uma foto do celular:</p>
+
+    <input
+      type="file"
+      accept="image/*"
+      onchange="mostrarFoto(event)"
+    >
+
+    <div id="galeria"></div>
+  </div>
+
+
+  <!-- MÚSICAS E GRAVAÇÕES -->
+  <div class="card">
+    <h2>🎵 Nossas Músicas</h2>
+
+    <p>
+      Você poderá colocar aqui músicas e gravações especiais.
+    </p>
+
+    <input
+      type="file"
+      accept="audio/*"
+      onchange="carregarAudio(event)"
+    >
+
+    <audio
+      id="player"
+      controls
+    ></audio>
+  </div>
+
+
+  <!-- MENSAGEM SURPRESA -->
+  <div class="card">
+    <h2>💖 Uma surpresa</h2>
+
+    <button onclick="mostrarMensagem()">
+      ❤️ Aperte aqui
+    </button>
+
+    <div
+      id="mensagemAmor"
+      style="display:none; text-align:center; padding:20px;"
+    >
+      <h2>Eu amo você! ❤️</h2>
+
+      <p>
+        Esse cantinho foi feito especialmente para nós,
+        para guardar nossos momentos, nossos planos
+        e tudo aquilo que faz parte da nossa história.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Feito com ❤️ especialmente para nós.
+</footer>
+
+
+<script>
+
+  // -------------------------
+  // BLOCO DE NOTAS
+  // -------------------------
+
+  const notas = document.getElementById("notas");
+
+  notas.value =
+    localStorage.getItem("nossasNotas") || "";
+
+  function salvarNotas() {
+
+    localStorage.setItem(
+      "nossasNotas",
+      notas.value
+    );
+
+    document.getElementById("statusNota")
+      .innerText = "❤️ Anotação salva!";
+
+  }
+
+
+  // -------------------------
+  // LEMBRETES
+  // -------------------------
+
+  let lembretes =
+    JSON.parse(
+      localStorage.getItem("lembretes")
+    ) || [];
+
+
+  function adicionarLembrete() {
+
+    const titulo =
+      document.getElementById("titulo").value;
+
+    const dataHora =
+      document.getElementById("dataHora").value;
+
+
+    if (!titulo || !dataHora) {
+
+      alert(
+        "Coloque o nome do lembrete e a data/hora."
+      );
+
+      return;
+    }
+
+
+    lembretes.push({
+      titulo,
+      dataHora
+    });
+
+
+    localStorage.setItem(
+      "lembretes",
+      JSON.stringify(lembretes)
+    );
+
+
+    mostrarLembretes();
+
+
+    alert("🔔 Lembrete criado!");
+
+  }
+
+
+  function mostrarLembretes() {
+
+    const lista =
+      document.getElementById("listaLembretes");
+
+    lista.innerHTML = "";
+
+
+    lembretes.forEach(
+      (lembrete, indice) => {
+
+        const div =
+          document.createElement("div");
+
+        div.className = "item";
+
+        const data =
+          new Date(lembrete.dataHora);
+
+
+        div.innerHTML = `
+          <strong>${lembrete.titulo}</strong>
+          <br>
+          ${data.toLocaleString("pt-BR")}
+          <br><br>
+
+          <button onclick="apagarLembrete(${indice})">
+            Excluir
+          </button>
+        `;
+
+        lista.appendChild(div);
+
+      }
+    );
+
+  }
+
+
+  function apagarLembrete(indice) {
+
+    lembretes.splice(indice, 1);
+
+    localStorage.setItem(
+      "lembretes",
+      JSON.stringify(lembretes)
+    );
+
+    mostrarLembretes();
+
+  }
+
+
+  // Verifica os lembretes
+  setInterval(() => {
+
+    const agora = new Date();
+
+    lembretes.forEach(lembrete => {
+
+      const horario =
+        new Date(lembrete.dataHora);
+
+
+      const diferenca =
+        Math.abs(
+          agora.getTime() -
+          horario.getTime()
+        );
+
+
+      if (
+        diferenca < 30000 &&
+        !lembrete.disparado
+      ) {
+
+        lembrete.disparado = true;
+
+        localStorage.setItem(
+          "lembretes",
+          JSON.stringify(lembretes)
+        );
+
+
+        alert(
+          "🔔 LEMBRETE\n\n" +
+          lembrete.titulo
+        );
+
+      }
+
+    });
+
+  }, 10000);
+
+
+  // -------------------------
+  // FOTOS
+  // -------------------------
+
+  function mostrarFoto(event) {
+
+    const arquivo =
+      event.target.files[0];
+
+    if (!arquivo) return;
+
+
+    const leitor =
+      new FileReader();
+
+
+    leitor.onload = function(e) {
+
+      const img =
+        document.createElement("img");
+
+      img.src = e.target.result;
+
+      img.className = "photo";
+
+      document
+        .getElementById("galeria")
+        .appendChild(img);
+
+    };
+
+
+    leitor.readAsDataURL(arquivo);
+
+  }
+
+
+  // -------------------------
+  // ÁUDIO
+  // -------------------------
+
+  function carregarAudio(event) {
+
+    const arquivo =
+      event.target.files[0];
+
+    if (!arquivo) return;
+
+
+    const player =
+      document.getElementById("player");
+
+
+    player.src =
+      URL.createObjectURL(arquivo);
+
+
+    player.play();
+
+  }
+
+
+  // -------------------------
+  // MENSAGEM
+  // -------------------------
+
+  function mostrarMensagem() {
+
+    const mensagem =
+      document.getElementById("mensagemAmor");
+
+
+    if (mensagem.style.display === "none") {
+
+      mensagem.style.display = "block";
+
+    } else {
+
+      mensagem.style.display = "none";
+
+    }
+
+  }
+
+
+  mostrarLembretes();
+
+</script>
+
+</body>
+</html>
