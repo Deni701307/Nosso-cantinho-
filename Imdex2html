@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#120b16">
+
+  <title>Daniela & Daniel — Sempre ❤️</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, #6b294f 0%, #2b1528 35%, #0d090d 100%);
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 35px 20px 25px;
+    }
+
+    .logo {
+      width: 260px;
+      max-width: 85%;
+      display: block;
+      margin: 0 auto 18px;
+      border-radius: 28px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.45);
+    }
+
+    header h1 {
+      margin: 8px 0;
+      font-size: 30px;
+    }
+
+    .sempre {
+      color: #f5d38a;
+      font-size: 20px;
+      letter-spacing: 7px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 15px 20px 35px;
+    }
+
+    .card {
+      background: rgba(255,255,255,.10);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    input,
+    textarea,
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    button {
+      background: linear-gradient(135deg, #c74477, #ff6998);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(.98);
+    }
+
+    .item {
+      background: rgba(0,0,0,.25);
+      padding: 13px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+
+    .foto {
+      width: 100%;
+      max-height: 430px;
+      object-fit: cover;
+      border-radius: 18px;
+      margin-top: 15px;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .amor {
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .amor strong {
+      color: #f5d38a;
+      font-size: 24px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #e5c8d6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+
+    <img
+      src="logo.svg"
+      class="logo"
+      alt="Daniela e Daniel - Sempre"
+    >
+
+    <h1>Daniela & Daniel ❤️</h1>
+
+    <div class="sempre">
+      SEMPRE
+    </div>
+
+  </header>
+
+
+  <div class="container">
+
+    <!-- AGENDA -->
+
+    <section class="card">
+
+      <h2>📅 Nossa Agenda</h2>
+
+      <input
+        id="titulo"
+        type="text"
+        placeholder="Ex.: Tomar remédio"
+      >
+
+      <input
+        id="dataHora"
+        type="datetime-local"
+      >
+
+      <button onclick="adicionarLembrete()">
+        🔔 Criar lembrete
+      </button>
+
+      <div id="listaLembretes"></div>
+
+    </section>
+
+
+    <!-- NOTAS -->
+
+    <section class="card">
+
+      <h2>📝 Nosso Bloco de Notas</h2>
+
+      <textarea
+        id="notas"
+        placeholder="Recados, planos, sonhos, coisas que não podemos esquecer..."
+      ></textarea>
+
+      <button onclick="salvarNotas()">
+        💾 Salvar anotação
+      </button>
+
+      <p id="statusNota"></p>
+
+    </section>
+
+
+    <!-- FOTOS -->
+
+    <section class="card">
+
+      <h2>📸 Nossos Momentos</h2>
+
+      <p>
+        Um lugar para guardar um pouquinho da nossa história. ❤️
+      </p>
+
+      <input
+        type="file"
+        accept="image/*"
+        onchange="mostrarFoto(event)"
+      >
+
+      <div id="galeria"></div>
+
+    </section>
+
+
+    <!-- MÚSICAS -->
+
+    <section class="card">
+
+      <h2>🎵 Nossa Trilha Sonora</h2>
+
+      <p>
+        Escolha uma música ou uma gravação especial.
+      </p>
+
+      <input
+        type="file"
+        accept="audio/*"
+        onchange="carregarAudio(event)"
+      >
+
+      <audio
+        id="player"
+        controls
+      ></audio>
+
+    </section>
+
+
+    <!-- SURPRESA -->
+
+    <section class="card amor">
+
+      <h2>💌 Para Daniela</h2>
+
+      <button onclick="mostrarMensagem()">
+        ❤️ Daniela, aperte aqui
+      </button>
+
+      <div
+        id="mensagemAmor"
+        style="display:none; padding-top:20px;"
+      >
+
+        <strong>SEMPRE.</strong>
+
+        <p>
+          Fiz este cantinho pensando em nós.
+        </p>
+
+        <p>
+          Para guardar nossos momentos,
+          nossos planos, nossas lembranças
+          e tudo aquilo que ainda vamos viver.
+        </p>
+
+        <p>
+          Daniela & Daniel ❤️
+        </p>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <footer>
+    Daniela & Daniel • SEMPRE ❤️
+  </footer>
+
+
+  <script>
+
+    // BLOCO DE NOTAS
+
+    const notas =
+      document.getElementById("notas");
+
+    notas.value =
+      localStorage.getItem("nossasNotas") || "";
+
+
+    function salvarNotas() {
+
+      localStorage.setItem(
+        "nossasNotas",
+        notas.value
+      );
+
+      document.getElementById("statusNota")
+        .innerText = "❤️ Anotação salva!";
+
+    }
+
+
+    // LEMBRETES
+
+    let lembretes =
+      JSON.parse(
+        localStorage.getItem("lembretes")
+      ) || [];
+
+
+    function adicionarLembrete() {
+
+      const titulo =
+        document.getElementById("titulo").value;
+
+      const dataHora =
+        document.getElementById("dataHora").value;
+
+
+      if (!titulo || !dataHora) {
+
+        alert(
+          "Coloque o lembrete e escolha a data e o horário."
+        );
+
+        return;
+      }
+
+
+      lembretes.push({
+        titulo: titulo,
+        dataHora: dataHora,
+        disparado: false
+      });
+
+
+      salvarLembretes();
+
+      mostrarLembretes();
+
+
+      document.getElementById("titulo").value = "";
+      document.getElementById("dataHora").value = "";
+
+
+      alert("🔔 Lembrete criado!");
+
+    }
+
+
+    function salvarLembretes() {
+
+      localStorage.setItem(
+        "lembretes",
+        JSON.stringify(lembretes)
+      );
+
+    }
+
+
+    function mostrarLembretes() {
+
+      const lista =
+        document.getElementById("listaLembretes");
+
+      lista.innerHTML = "";
+
+
+      lembretes.forEach(
+        function(lembrete, indice) {
+
+          const data =
+            new Date(lembrete.dataHora);
+
+
+          const div =
+            document.createElement("div");
+
+
+          div.className = "item";
+
+
+          div.innerHTML = `
+            <strong>🔔 ${lembrete.titulo}</strong>
+
+            <br><br>
+
+            ${data.toLocaleString("pt-BR")}
+
+            <br><br>
+
+            <button onclick="apagarLembrete(${indice})">
+              🗑️ Excluir
+            </button>
+          `;
+
+
+          lista.appendChild(div);
+
+        }
+      );
+
+    }
+
+
+    function apagarLembrete(indice) {
+
+      lembretes.splice(indice, 1);
+
+      salvarLembretes();
+
+      mostrarLembretes();
+
+    }
+
+
+    setInterval(function() {
+
+      const agora =
+        new Date().getTime();
+
+
+      lembretes.forEach(
+        function(lembrete) {
+
+          const horario =
+            new Date(
+              lembrete.dataHora
+            ).getTime();
+
+
+          const diferenca =
+            Math.abs(
+              agora - horario
+            );
+
+
+          if (
+            diferenca < 30000 &&
+            !lembrete.disparado
+          ) {
+
+            lembrete.disparado = true;
+
+            salvarLembretes();
+
+
+            alert(
+              "🔔 LEMBRETE\n\n" +
+              lembrete.titulo
+            );
+
+          }
+
+        }
+      );
+
+    }, 10000);
+
+
+    // FOTO
+
+    function mostrarFoto(event) {
+
+      const arquivo =
+        event.target.files[0];
+
+
+      if (!arquivo) {
+        return;
+      }
+
+
+      const leitor =
+        new FileReader();
+
+
+      leitor.onload =
+        function(e) {
+
+          const img =
+            document.createElement("img");
+
+
+          img.src =
+            e.target.result;
+
+
+          img.className =
+            "foto";
+
+
+          document
+            .getElementById("galeria")
+            .appendChild(img);
+
+        };
+
+
+      leitor.readAsDataURL(
+        arquivo
+      );
+
+    }
+
+
+    // ÁUDIO
+
+    function carregarAudio(event) {
+
+      const arquivo =
+        event.target.files[0];
+
+
+      if (!arquivo) {
+        return;
+      }
+
+
+      const player =
+        document.getElementById("player");
+
+
+      player.src =
+        URL.createObjectURL(
+          arquivo
+        );
+
+
+      player.play();
+
+    }
+
+
+    // SURPRESA
+
+    function mostrarMensagem() {
+
+      const mensagem =
+        document.getElementById(
+          "mensagemAmor"
+        );
+
+
+      if (
+        mensagem.style.display === "none"
+      ) {
+
+        mensagem.style.display =
+          "block";
+
+      } else {
+
+        mensagem.style.display =
+          "none";
+
+      }
+
+    }
+
+
+    mostrarLembretes();
+
+  </script>
+
+</body>
+</html>
